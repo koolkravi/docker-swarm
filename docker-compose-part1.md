@@ -2,12 +2,12 @@
 
 ## A. Set up
 you need following 
-# Two Create Virtual Machine with linux host
-# install docker 
-# The IP address of the manager machine
-# Open protocols and ports between the hosts
+### Two Create Virtual Machine with linux host
+### install docker 
+### The IP address of the manager machine
+### Open protocols and ports between the hosts
 
-# Step1: 2 Create Virtual Machine with linux host
+#### Step1: 2 Create Virtual Machine with linux host
 
 Run below command. it willcreate 2 VM
 ubuntuvm01 - master node
@@ -17,7 +17,7 @@ ubuntuvm02 - worker node
 vagrant up
 ```
 
-# step 2: install docker 
+### Step 2: install docker 
 run script from below link on bothe VM
 https://github.com/koolkravi/kubernetes-playground/blob/master/kubernetes-with-kind/install-docker.sh
 
@@ -33,7 +33,7 @@ Docker version 19.03.8, build afacb8b7f0
 
 }
 
-# Step3: The IP address of the manager machine
+### Step3: The IP address of the manager machine
 The IP address must be assigned to a network interface available to the host operating system
 
 ```
@@ -43,7 +43,7 @@ ifconfig
 - ubuntuvm01 - master node - 10.0.0.5
 - ubuntuvm02 - worker node - 10.0.0.6
 
-# Step4: Open protocols and ports between the hosts
+### Step4: Open protocols and ports between the hosts
 The following ports must be available. On some systems, these ports are open by default
 
 - TCP port 2377 for cluster management communications
@@ -72,13 +72,13 @@ sudo ufw allow 4789/tcp
 
 ## B. Create swarm
 
-# Step 1: manager node
+### Step 1: manager node
 
 ```
 vagrant ssh ubuntuvm01
 ```
 
-# Step 2: Following command create swarm
+### Step 2: Following command create swarm
 
 ```
 docker swarm init --advertise-addr 10.0.0.5
@@ -93,7 +93,7 @@ To add a worker to this swarm, run the following command:
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
 
-# Step 3: 
+### Step 3: 
 ```
 docker info
 output:
@@ -112,32 +112,30 @@ Managers: 1
 Nodes: 1
 .
 .
-
 ```
 
-# Step 4: 
+### Step 4: 
 
 ```
 root@ubuntuvm01:/home/vagrant# docker node ls
 
 ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
 jiabm1qni66jywectswob4mtc *   ubuntuvm01          Ready               Active              Leader              19.03.8
-
 ```
 
 ## C. Add one more node to swarm
-# Step 1: from worker nodes
+### Step 1: from worker nodes
 
 ```
 vagrant ssh ubuntuvm02
-``
-# Step 2: 
+```
+
+### Step 2: 
 
 ```
 docker swarm join --token SWMTKN-1-1vqdwkeqtgwd0q20stycqbhfsv0lyg6007je9w7ozvihzghtw8-a6psq3f1xxwmdjxs89qm0j1vy 10.0.0.5:2377
 
 This node joined a swarm as a worker.
-
 ```
 
 - Retrieve Join command
@@ -149,20 +147,21 @@ docker swarm join-token worker
 - Repeate above to join mmore worker node to cluster
 
 ## D. Deploy a Service to swarm
-# Step 1: from manager node
+### Step 1: from manager node
 
 ```
  docker service create --replicas 1 --name hellowworld alpine ping docker.com
 ```
-# Step 2: from manager node
+
+### Step 2: from manager node
 
 ```
 root@ubuntuvm01:/home/vagrant# docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
 vfu7dcgcj0ld        hellowworld         replicated          1/1                 alpine:latest
-
 ```
-# Step 3: inspect the service
+
+### Step 3: inspect the service
 ```
 root@ubuntuvm01:/home/vagrant# docker service inspect --pretty hellowworld
 
@@ -195,7 +194,7 @@ Endpoint Mode:  vip
 root@ubuntuvm01:/home/vagrant# docker service inspect hellowworld
 ```
 
-# step 4: Check which node is running the service
+### Step 4: Check which node is running the service
 
 ```
 root@ubuntuvm01:/home/vagrant# docker service ps hellowworld
@@ -203,7 +202,7 @@ ID                  NAME                IMAGE               NODE                
 z08pkp3lpyi8        hellowworld.1       alpine:latest       ubuntuvm01          Running             Running 10 minutes ago
 ```
 
-# Step 4: To See details about the container ( run where task is running)
+### Step 4: To See details about the container ( run where task is running)
 
 ```
 root@ubuntuvm01:/home/vagrant# docker ps
@@ -211,8 +210,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 6408e7d8a3a0        alpine:latest       "ping docker.com"   13 minutes ago      Up 13 minutes                           hellowworld.1.z08pkp3lpyi8gqww2dgq1ffex
 
 ```
-# Step 5: scale
 
+### Step 5: scale
 ```
 root@ubuntuvm01:/home/vagrant# docker service scale hellowworld=5
 hellowworld scaled to 5
@@ -223,7 +222,6 @@ overall progress: 5 out of 5 tasks
 4/5: running   [==================================================>]
 5/5: running   [==================================================>]
 verify: Service converged
-
 ```
 
 - Containers running in a service are called “tasks.”
@@ -253,12 +251,10 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 59b6ee594304        alpine:latest       "ping docker.com"   3 minutes ago       Up 3 minutes                            hellowworld.2.qy5ktskdi7vy5sda6lm9pqezo
 ```
 
-
-# Step 5: delete the service running on swarm
+### Step 5: delete the service running on swarm
 ```
 root@ubuntuvm01:/home/vagrant# docker service rm hellowworld
 hellowworld
-
 ```
 
 ```
@@ -274,7 +270,7 @@ containers take few seconds to clean up
 docker ps
 ```
 
-## Step 6: Rolling update
+### Step 6: Rolling update
 
 ```
 root@ubuntuvm01:/home/vagrant# docker service create --replicas 3 --name redis --update-delay 10s redis:3.0.6
@@ -359,18 +355,16 @@ mxjdmdwi84n7        redis.2             redis:3.0.7         ubuntuvm02          
 e7k4blc5yov6         \_ redis.2         redis:3.0.6         ubuntuvm02          Shutdown            Shutdown 4 minutes ago
 saibwosepijc        redis.3             redis:3.0.7         ubuntuvm01          Running             Running 3 minutes ago
 vxsbvz0h8are         \_ redis.3         redis:3.0.6         ubuntuvm01          Shutdown            Shutdown 3 minutes ago
-
 ```
 
 ## E. Drain node on swarm
 
-# Step 1: 
+### Step 1: 
 ```
 root@ubuntuvm01:/home/vagrant# docker node ls
 ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
 jiabm1qni66jywectswob4mtc *   ubuntuvm01          Ready               Active              Leader              19.03.8
 op0i0d7tbjo7vmx9vm8rwe71c     ubuntuvm02          Ready               Active                                  19.03.8
-
 ```
 
 ```
@@ -378,7 +372,6 @@ root@ubuntuvm01:/home/vagrant# docker service  ps redis | grep Running
 m8xhskhous40        redis.1             redis:3.0.7         ubuntuvm01          Running             Running 17 minutes ago
 mxjdmdwi84n7        redis.2             redis:3.0.7         ubuntuvm02          Running             Running 17 minutes ago
 saibwosepijc        redis.3             redis:3.0.7         ubuntuvm01          Running             Running 16 minutes ago
-
 ```
 
 ```
@@ -386,7 +379,6 @@ Drain node
 
 root@ubuntuvm01:/home/vagrant# docker node update --availability drain ubuntuvm02
 ubuntuvm02
-
 ```
 
 ```
@@ -398,8 +390,6 @@ Status:
  State:                 Ready
  Availability:          Drain
 .
-.
-
 ```
 
 ```
@@ -435,7 +425,7 @@ To use the ingress network in the swarm, following port should be open between s
 * Port 7946 TCP/UDP for container network discovery.
 * Port 4789 UDP for the container ingress network.
 
-# Step 1: Publish a port for a service
+### Step 1: Publish a port for a service
 
 ```
 root@ubuntuvm01:/home/vagrant# docker service create --name my-web --replicas 2 --publish published=8080,target=80 nginx
@@ -446,7 +436,6 @@ docker service update --publish-add published=<PUBLISHED-PORT>,target=<CONTAINER
 
 root@ubuntuvm01:/home/vagrant# docker service inspect --format="{{json .Endpoint.Spec.Ports}}" my-web
 [{"Protocol":"tcp","TargetPort":80,"PublishedPort":8080,"PublishMode":"ingress"}]
-
 ```
 
 ```
@@ -478,6 +467,7 @@ root@ubuntuvm01:/home/vagrant# docker ps | grep redis
 root@ubuntuvm02:/home/vagrant# docker ps | grep redis
 564577b64a65        redis:3.0.7         "docker-entrypoint.s…"   About a minute ago   Up About a minute   6379/tcp, 0.0.0.0:8081->6379/udp   redis.op0i0d7tbjo7vmx9vm8rwe71c.yvf11habgyvbmfpgwtvt6rwrt
 ```
+
 ```
 root@ubuntuvm01:/home/vagrant# docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
@@ -489,15 +479,16 @@ h06on8q7m0gd        redis               global              2/2                 
 
 External load balancer for swarm services can be configured either in combination with the routing mesh or without using the routing mesh at all.
 
-## Step 1: Using the routing mesh
+### Step 1: Using the routing mesh
 
 HAProxy Read : https://cbonte.github.io/haproxy-dconv/
 
-## Step 2: Without the routing mesh
+### Step 2: Without the routing mesh
 To use an external load balancer without the routing mesh, set --endpoint-mode to dnsrr instead of the default value of vip
 - Configure service discovery.: https://docs.docker.com/engine/swarm/networking/#configure-service-discovery
 
 ## command Summary 
+
 ```
 docker node ls
 docker service ls
@@ -508,7 +499,7 @@ docker ps
 ```
 
 
-- ref 
+- Ref 
 - https://docs.docker.com/engine/swarm/swarm-tutorial/
 - docker engine overview : https://docs.docker.com/engine/
 - How to Open/Allow incoming firewall port on Ubuntu 18.04 Bionic Beaver Linux
@@ -516,5 +507,5 @@ docker ps
 - https://www.cyberciti.biz/faq/how-to-open-firewall-port-on-ubuntu-linux-12-04-14-04-lts/
 
 # Further reading in detail - Deploy services to a swarm
-* https://docs.docker.com/engine/swarm/services/
+-  https://docs.docker.com/engine/swarm/services/
 
