@@ -1,13 +1,14 @@
 # Docker swarm
 
 ## A. Set up
-you need following 
-### Two Create Virtual Machine with linux host
-### install docker 
-### The IP address of the manager machine
-### Open protocols and ports between the hosts
+### You need following 
 
-#### Step1: 2 Create Virtual Machine with linux host
+-  Create 2 Virtual Machine with linux host
+- install docker 
+- The IP address of the manager machine
+- Open protocols and ports between the hosts
+
+#### Step 1: Create 2 Virtual Machine with linux host
 
 Run below command. it willcreate 2 VM
 ubuntuvm01 - master node
@@ -24,14 +25,16 @@ https://github.com/koolkravi/kubernetes-playground/blob/master/kubernetes-with-k
 ```
 install-docker.sh
 ```
+
+```
 {
 root@ubuntuvm01:/home/vagrant# docker --version
 Docker version 19.03.8, build afacb8b7f0
 
 root@ubuntuvm02:/home/vagrant# docker --version
 Docker version 19.03.8, build afacb8b7f0
-
 }
+```
 
 ### Step3: The IP address of the manager machine
 The IP address must be assigned to a network interface available to the host operating system
