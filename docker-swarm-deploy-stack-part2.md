@@ -8,19 +8,16 @@ The docker stack deploy command supports any Compose file of version “3.0” or ab
 ## Pre-requisite
 - Docker Engine of version 1.13.0 or later
 
-````
 [install-docker.sh](https://github.com/koolkravi/kubernetes-playground/blob/master/kubernetes-with-kind/install-docker.sh)
-```
 
 - Docker Compose version 1.10 or later
 
 ```
 install-docker-compose.sh
 ```
+*docker-compose version 1.25.5, build 8a1c60f6
 
 ```
-- docker-compose version 1.25.5, build 8a1c60f6
-
 uinstall 
 sudo rm /usr/local/bin/docker-compose
 ```
