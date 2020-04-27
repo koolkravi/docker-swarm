@@ -24,7 +24,7 @@ sudo rm /usr/local/bin/docker-compose
 
 - Setup swarm Manager and workder node
 
-	[Execute Step B and Step C] (https://github.com/koolkravi/docker-swarm/blob/master/docker-swarm-deploy-service-part1.md)
+	[Execute Step B and Step C](https://github.com/koolkravi/docker-swarm/blob/master/docker-swarm-deploy-service-part1.md)
 
 ## Step 1 : Set up a docker registry
 swarm consists of multiple Docker Engines, a registry is required to distribute images to all of them.
