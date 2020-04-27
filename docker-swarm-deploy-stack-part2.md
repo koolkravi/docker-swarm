@@ -8,7 +8,7 @@ The docker stack deploy command supports any Compose file of version “3.0” or ab
 ## Pre-requisite
 - Docker Engine of version 1.13.0 or later
 
-[install-docker.sh](https://github.com/koolkravi/kubernetes-playground/blob/master/kubernetes-with-kind/install-docker.sh)
+	[install-docker.sh](https://github.com/koolkravi/kubernetes-playground/blob/master/kubernetes-with-kind/install-docker.sh)
 
 - Docker Compose version 1.10 or later
 
@@ -23,7 +23,8 @@ sudo rm /usr/local/bin/docker-compose
 ```
 
 - Setup swarm Manager and workder node
-[Execute Step B and Step C] (https://github.com/koolkravi/docker-swarm/blob/master/docker-compose-part1.md)
+
+	[Execute Step B and Step C] (https://github.com/koolkravi/docker-swarm/blob/master/docker-swarm-deploy-service-part1.md)
 
 ## Step 1 : Set up a docker registry
 swarm consists of multiple Docker Engines, a registry is required to distribute images to all of them.
